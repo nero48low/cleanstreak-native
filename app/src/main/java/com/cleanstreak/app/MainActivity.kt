@@ -13,7 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.graphicsLayer
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -173,10 +173,10 @@ fun HomeTab(state: AppState, todayDone: Boolean, onClean: ()->Unit, onSlip: ()->
 fun BadgesTab(state: AppState) {
     Column(verticalArrangement=Arrangement.spacedBy(10.dp)) {
         Text("Achievements",fontWeight=FontWeight.ExtraBold,fontSize=18.sp,color=Color.White)
-        BADGES.forEach{b->val e=b.id in state.earnedBadges;Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(BgCard).border(2.dp,if(e)Gold else BgCard2,RoundedCornerShape(16.dp)).padding(16.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)){Text(b.icon,fontSize=36.sp,modifier=Modifier.graphicsLayer{alpha=if(e)1f else 0.4f});Column(Modifier.weight(1f)){Text(b.label,fontWeight=FontWeight.ExtraBold,fontSize=15.sp,color=Color.White.copy(alpha=if(e)1f else 0.5f));Text(b.desc,fontSize=12.sp,color=TextMuted);if(!e){Spacer(Modifier.height(6.dp));LinearProgressIndicator(progress={(state.streak.toFloat()/b.req).coerceIn(0f,1f)},modifier=Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(4.dp)),color=Green,trackColor=BgCard2)}};if(e)Text("⭐",fontSize=18.sp)}}
+        BADGES.forEach{b->val e=b.id in state.earnedBadges;Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(BgCard).border(2.dp,if(e)Gold else BgCard2,RoundedCornerShape(16.dp)).padding(16.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)){Text(b.icon,fontSize=36.sp,modifier=Modifier.alpha(if(e)1f else 0.4f));Column(Modifier.weight(1f)){Text(b.label,fontWeight=FontWeight.ExtraBold,fontSize=15.sp,color=Color.White.copy(alpha=if(e)1f else 0.5f));Text(b.desc,fontSize=12.sp,color=TextMuted);if(!e){Spacer(Modifier.height(6.dp));LinearProgressIndicator(progress={(state.streak.toFloat()/b.req).coerceIn(0f,1f)},modifier=Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(4.dp)),color=Green,trackColor=BgCard2)}};if(e)Text("⭐",fontSize=18.sp)}}
         Spacer(Modifier.height(8.dp))
         Text("Leagues",fontWeight=FontWeight.ExtraBold,fontSize=18.sp,color=Color.White)
-        LEAGUES.forEach{l->val cur=state.currentLeague().name==l.name;Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(BgCard).border(2.dp,if(cur)Gold else BgCard2,RoundedCornerShape(14.dp)).padding(12.dp,14.dp).graphicsLayer{alpha=if(state.xp>=l.min)1f else 0.4f},verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)){Text(l.icon,fontSize=26.sp);Column(Modifier.weight(1f)){Text(l.name,fontWeight=FontWeight.Bold,color=Color.White);Text("${l.min} XP required",fontSize=12.sp,color=TextMuted)};if(cur)Text("CURRENT",fontSize=11.sp,color=Gold,fontWeight=FontWeight.ExtraBold)}}
+        LEAGUES.forEach{l->val cur=state.currentLeague().name==l.name;Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(BgCard).border(2.dp,if(cur)Gold else BgCard2,RoundedCornerShape(14.dp)).padding(12.dp,14.dp).alpha(if(state.xp>=l.min)1f else 0.4f),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)){Text(l.icon,fontSize=26.sp);Column(Modifier.weight(1f)){Text(l.name,fontWeight=FontWeight.Bold,color=Color.White);Text("${l.min} XP required",fontSize=12.sp,color=TextMuted)};if(cur)Text("CURRENT",fontSize=11.sp,color=Gold,fontWeight=FontWeight.ExtraBold)}}
         Spacer(Modifier.height(8.dp))
     }
 }
